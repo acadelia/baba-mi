@@ -1,14 +1,14 @@
 import { Component, HostListener, inject } from '@angular/core';
-import { Movement } from '../../actions/movement/movement.service';
+import { MovementService } from '../../actions/movement/movement.service';
 
 @Component({
   selector: 'app-map',
   standalone: false,
-  templateUrl: './map.html',
-  styleUrl: './map.css',
+  templateUrl: './map.component.html',
+  styleUrl: './map.component.css',
 })
-export class Map {
-  movement = inject(Movement);
+export class MapComponent {
+  movementService = inject(MovementService);
   pressedKey: string = '';
   position = {
     row: 0,
@@ -23,7 +23,7 @@ export class Map {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
-    this.position = this.movement.pathTraverse(
+    this.position = this.movementService.pathTraverse(
       this.grid,
       this.position.row,
       this.position.column,

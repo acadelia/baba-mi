@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class Movement {
+export class MovementService {
   pathTraverse(grid: number[][], startRow: number, startCol: number, event: KeyboardEvent) {
     const maxRow = grid.length - 1;
     const maxCol = grid[0].length - 1;
