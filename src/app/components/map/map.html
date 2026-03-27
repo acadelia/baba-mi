@@ -1,0 +1,16 @@
+<div class="grid">
+  <div class="row" *ngFor="let rowVal of grid; let rowIndex = index">
+    <div
+      class="cell"
+      *ngFor="let cell of rowVal; let colIndex = index"
+      [class.visible]="position.row === rowIndex && position.column === colIndex"
+    >
+      {{ cell + 1 }}
+      <img
+        src="assets/hello-kitty-char.png"
+        class="character-size"
+        [class.visible]="position.row === rowIndex && position.column === colIndex"
+      />
+    </div>
+  </div>
+</div>

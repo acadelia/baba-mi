@@ -1,0 +1,25 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+}
+
+.character-size {
+  width: 40px;
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1 !important;
+}
