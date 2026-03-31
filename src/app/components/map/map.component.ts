@@ -21,6 +21,16 @@ export class MapComponent {
     [6, 7, 8],
   ];
 
+  getTransform(): string {
+    const cellSize = 100;
+    const offset = 10;
+
+    const x = this.position.column * cellSize;
+    const y = this.position.row * cellSize;
+
+    return `translate(${x + offset}px, ${y + offset}px)`;
+  }
+
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
     this.position = this.movementService.pathTraverse(
