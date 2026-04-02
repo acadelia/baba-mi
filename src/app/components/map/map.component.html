@@ -1,7 +1,32 @@
 <div class="grid">
-  <div class="row" *ngFor="let rowVal of grid">
-    <div class="cell" *ngFor="let cell of rowVal"></div>
+  <div class="row" *ngFor="let row of grid(); let rowIndex = index">
+    <div
+      class="cell"
+      *ngFor="let cell of row; let colIndex = index"
+      [class.top]="!hasTop(rowIndex, colIndex)"
+      [class.bottom]="!hasBottom(rowIndex, colIndex)"
+      [class.left]="!hasLeft(rowIndex, colIndex)"
+      [class.right]="!hasRight(rowIndex, colIndex)"
+    >
+      <img
+        src="assets/flag.jpg"
+        class="flag"
+        [class.visible]="flagPosition().row === rowIndex && flagPosition().column === colIndex"
+      />
+    </div>
   </div>
+  <img src="assets/hello-kitty-char.png" class="character" [style.transform]="transform()" />
+</div>
 
-  <img src="assets/hello-kitty-char.png" class="character" [style.transform]="getTransform()" />
+<div class="finish-block" [class.visible]="reachedFlag()">
+  <img src="assets/giphy.gif" class="finish-image" />
+  <button
+    class="btn glitch"
+    (click)="nextLevel()"
+    (keydown.enter)="nextLevel()"
+    #btnFocus
+    [autofocus]="btnFocus.focus()"
+  >
+    <span>Continue</span>
+  </button>
 </div>

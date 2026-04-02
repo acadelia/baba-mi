@@ -10,7 +10,7 @@
 .cell {
   width: 100px;
   height: 100px;
-  border: 1px solid black;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,6 +23,95 @@
   left: 0;
   width: 80px;
   height: 80px;
-
   transition: transform 0.2s ease;
+}
+
+.visible {
+  opacity: 1 !important;
+}
+
+.flag {
+  width: 80px;
+  height: 80px;
+  opacity: 0;
+}
+
+.finish-image {
+  height: 80%;
+}
+
+.finish-block {
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #ffe7eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  flex-direction: column;
+}
+
+.top {
+  border-top: 1px solid black;
+}
+
+.bottom {
+  border-bottom: 1px solid black;
+}
+
+.left {
+  border-left: 1px solid black;
+}
+
+.right {
+  border-right: 1px solid black;
+}
+
+.btn {
+  position: relative;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: none;
+  border: 2px solid #ff64b4;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.glitch {
+  text-shadow:
+    0.05em 0 0 rgba(255, 0, 234, 0.75),
+    -0.025em -0.05em 0 rgba(255, 0, 0, 0.75),
+    0.025em 0.05em 0 rgba(191, 0, 255, 0.75);
+}
+
+.glitch:hover {
+  animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-4px, 4px);
+  }
+  40% {
+    transform: translate(-4px, -4px);
+  }
+  60% {
+    transform: translate(4px, 4px);
+  }
+  80% {
+    transform: translate(4px, -4px);
+  }
+  100% {
+    transform: translate(0);
+  }
 }

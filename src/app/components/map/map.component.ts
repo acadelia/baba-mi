@@ -1,5 +1,6 @@
-import { Component, HostListener, inject } from '@angular/core';
-import { MovementService } from '../../actions/movement/movement.service';
+import { Component, computed, HostListener, inject } from '@angular/core';
+import { MovementService } from '../../services/actions/movement/movement.service';
+import { CurrentLevelService } from '../../services/levels/current-level.service';
 
 @Component({
   selector: 'app-map',
@@ -9,35 +10,57 @@ import { MovementService } from '../../actions/movement/movement.service';
 })
 export class MapComponent {
   movementService = inject(MovementService);
+  currentLevelService = inject(CurrentLevelService);
+
   pressedKey: string = '';
-  position = {
-    row: 0,
-    column: 0,
-  };
+  position = this.currentLevelService.playerPosition;
+  flagPosition = this.currentLevelService.flagPosition;
+  grid = this.currentLevelService.grid;
 
-  grid = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-  ];
+  reachedFlag = computed(
+    () =>
+      this.flagPosition().column === this.position().column &&
+      this.flagPosition().row === this.position().row,
+  );
 
-  getTransform(): string {
+  transform = computed(() => {
     const cellSize = 100;
     const offset = 10;
 
-    const x = this.position.column * cellSize;
-    const y = this.position.row * cellSize;
+    const pos = this.position();
+
+    const x = pos.column * cellSize;
+    const y = pos.row * cellSize;
 
     return `translate(${x + offset}px, ${y + offset}px)`;
+  });
+
+  hasTop(row: number, col: number): boolean {
+    return this.grid()[row - 1]?.[col] !== undefined;
+  }
+
+  hasBottom(row: number, col: number): boolean {
+    return this.grid()[row + 1]?.[col] !== undefined;
+  }
+
+  hasLeft(row: number, col: number): boolean {
+    return this.grid()[row]?.[col - 1] !== undefined;
+  }
+
+  hasRight(row: number, col: number): boolean {
+    return this.grid()[row]?.[col + 1] !== undefined;
+  }
+
+  nextLevel() {
+    this.currentLevelService.nextLevel();
   }
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
-    this.position = this.movementService.pathTraverse(
-      this.grid,
-      this.position.row,
-      this.position.column,
-      event,
-    );
+    const pos = this.position();
+
+    const newPos = this.movementService.pathTraverse(this.grid(), pos.row, pos.column, event);
+
+    this.currentLevelService.movePlayer(newPos);
   }
 }

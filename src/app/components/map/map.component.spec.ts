@@ -26,11 +26,11 @@ describe('MapComponent', () => {
       column: 1,
     });
 
-    component.grid = [
+    (component.grid as any).set([
       [0, 1],
       [2, 3],
-    ];
-    component.position = { row: 0, column: 0 };
+    ]);
+    component.position.set({ row: 0, column: 0 });
 
     const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
     window.dispatchEvent(event);
