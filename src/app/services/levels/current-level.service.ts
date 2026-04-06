@@ -17,6 +17,7 @@ export class CurrentLevelService {
 
   grid = computed(() => this.levelData().grid);
   flagPosition = computed(() => this.levelData().flagPosition);
+  obstaclesPosition = computed(() => this.levelData().obstaclesPosition);
 
   constructor() {
     effect(() => {
@@ -44,6 +45,8 @@ export class CurrentLevelService {
       this.playerPosition.set(this.getInitialPosition(next));
     } else {
       this.currentLevel.set(1);
+      // to do - fix to be set based on level
+      this.playerPosition.set({ row: 0, column: 0 });
     }
   }
 }

@@ -1,9 +1,15 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { CurrentLevelService } from '../../levels/current-level.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovementService {
+  currentLevel = inject(CurrentLevelService);
+
+  obstaclesPosition = this.currentLevel.obstaclesPosition;
+  //should do to consider now the obstacles as well
+
   pathTraverse(grid: number[][], startRow: number, startCol: number, event: KeyboardEvent) {
     let nextRow = startRow;
     let nextCol = startCol;
@@ -31,4 +37,18 @@ export class MovementService {
       column: nextCol,
     };
   }
+
+  // moveObstacle(grid: number[][], event: KeyboardEvent, sameIndex: boolean) {
+  //   let wasPushed: string;
+
+  //   if (event.key === 'ArrowUp') {
+  //     wasPushed = 'up';
+  //   } else if (event.key === 'ArrowDown') {
+  //     wasPushed = 'down';
+  //   } else if (event.key === 'ArrowLeft') {
+  //     wasPushed = 'left';
+  //   } else if (event.key === 'ArrowRight') {
+  //     wasPushed = 'right';
+  //   }
+  // }
 }

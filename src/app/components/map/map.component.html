@@ -11,22 +11,21 @@
       <img
         src="assets/flag.jpg"
         class="flag"
-        [class.visible]="flagPosition().row === rowIndex && flagPosition().column === colIndex"
+        [class.visible]="findMapPosition(rowIndex, colIndex, flagPosition())"
+      />
+      <img
+        src="assets/matcha.jpg"
+        class="flag"
+        [class.visible]="findMapPosition(rowIndex, colIndex, obstacles())"
       />
     </div>
   </div>
-  <img src="assets/hello-kitty-char.png" class="character" [style.transform]="transform()" />
+  <img src="assets/hello-kitty-char.png" class="character" [style.transform]="move(position())" />
 </div>
 
 <div class="finish-block" [class.visible]="reachedFlag()">
   <img src="assets/giphy.gif" class="finish-image" />
-  <button
-    class="btn glitch"
-    (click)="nextLevel()"
-    (keydown.enter)="nextLevel()"
-    #btnFocus
-    [autofocus]="btnFocus.focus()"
-  >
+  <button class="btn glitch" (click)="nextLevel()">
     <span>Continue</span>
   </button>
 </div>

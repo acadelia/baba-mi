@@ -9,12 +9,17 @@ export const LEVELS: ILevel[] = [
     },
     flagPosition: {
       row: 1,
-      column: 2,
+      column: 6,
     },
     grid: [
-      [0, 0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+    ],
+    obstaclesPosition: [
+      { row: 0, column: 3 },
+      { row: 1, column: 3 },
+      { row: 2, column: 3 },
     ],
   },
   {
@@ -32,5 +37,6 @@ export const LEVELS: ILevel[] = [
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0],
     ],
+    obstaclesPosition: [{ row: 1, column: 1 }],
   },
 ];

@@ -9,4 +9,5 @@ export interface ILevel {
     column: number;
   };
   grid: number[][];
+  obstaclesPosition: { row: number; column: number }[];
 }

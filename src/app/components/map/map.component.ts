@@ -16,6 +16,7 @@ export class MapComponent {
   position = this.currentLevelService.playerPosition;
   flagPosition = this.currentLevelService.flagPosition;
   grid = this.currentLevelService.grid;
+  obstacles = this.currentLevelService.obstaclesPosition;
 
   reachedFlag = computed(
     () =>
@@ -23,17 +24,30 @@ export class MapComponent {
       this.flagPosition().row === this.position().row,
   );
 
-  transform = computed(() => {
+  move(element: any) {
+    if (!element) {
+      return null;
+    }
+    let x = 0;
+    let y = 0;
     const cellSize = 100;
     const offset = 10;
 
-    const pos = this.position();
+    const pos = element;
 
-    const x = pos.column * cellSize;
-    const y = pos.row * cellSize;
+    x = pos.column * cellSize;
+    y = pos.row * cellSize;
 
     return `translate(${x + offset}px, ${y + offset}px)`;
-  });
+  }
+
+  findMapPosition(rowIndex: number, columnIndex: number, element: any) {
+    if (Array.isArray(element)) {
+      return element.find((el) => el?.row === rowIndex && el?.column === columnIndex);
+    }
+
+    return element?.row === rowIndex && element?.column === columnIndex;
+  }
 
   hasTop(row: number, col: number): boolean {
     return this.grid()[row - 1]?.[col] !== undefined;
@@ -57,9 +71,33 @@ export class MapComponent {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
+    if (this.reachedFlag()) return;
+
     const pos = this.position();
 
     const newPos = this.movementService.pathTraverse(this.grid(), pos.row, pos.column, event);
+
+    const obstacles = this.obstacles();
+
+    const hitIndex = obstacles.findIndex((o) => o.row === newPos.row && o.column === newPos.column);
+
+    if (hitIndex !== -1) {
+      const pushedPos = this.movementService.pathTraverse(
+        this.grid(),
+        obstacles[hitIndex].row,
+        obstacles[hitIndex].column,
+        event,
+      );
+
+      const blocked =
+        obstacles.some((o) => o.row === pushedPos.row && o.column === pushedPos.column) ||
+        (pushedPos.row === this.flagPosition().row &&
+          pushedPos.column === this.flagPosition().column);
+
+      if (blocked) return;
+
+      obstacles[hitIndex] = pushedPos;
+    }
 
     this.currentLevelService.movePlayer(newPos);
   }
