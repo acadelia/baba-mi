@@ -1,6 +1,7 @@
-import { Component, computed, HostListener, inject } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
 import { MovementService } from '../../services/actions/movement/movement.service';
 import { CurrentLevelService } from '../../services/levels/current-level.service';
+import { GridService } from '../../services/grid/grid.service';
 
 @Component({
   selector: 'app-map',
@@ -9,6 +10,36 @@ import { CurrentLevelService } from '../../services/levels/current-level.service
   styleUrl: './map.component.css',
 })
 export class MapComponent {
+  @ViewChild('gridRef', { static: true }) gridRef!: ElementRef;
+
+  gridService = inject(GridService);
+
+  cellPositions: Record<string, { x: number; y: number }> = {};
+
+  gridOffset = { x: 0, y: 0 };
+  cellSize = 100;
+
+  ngAfterViewInit() {
+    const gridRect = this.gridRef.nativeElement.getBoundingClientRect();
+    const cells = this.gridRef.nativeElement.querySelectorAll('.cell');
+
+    cells.forEach((cell: HTMLElement) => {
+      const rect = cell.getBoundingClientRect();
+
+      const row = cell.getAttribute('data-row');
+      const col = cell.getAttribute('data-col');
+
+      if (row !== null && col !== null) {
+        this.cellPositions[`${row}-${col}`] = {
+          x: rect.left - gridRect.left,
+          y: rect.top - gridRect.top,
+        };
+      }
+    });
+
+    this.gridService.setPositions(this.cellPositions);
+  }
+
   movementService = inject(MovementService);
   currentLevelService = inject(CurrentLevelService);
 
@@ -24,21 +55,13 @@ export class MapComponent {
       this.flagPosition().row === this.position().row,
   );
 
-  move(element: any) {
-    if (!element) {
-      return null;
-    }
-    let x = 0;
-    let y = 0;
-    const cellSize = 100;
-    const offset = 10;
+  move(position: { row: number; column: number }) {
+    if (!position) return null;
+    const pos = this.gridService.getPosition(position.row, position.column);
 
-    const pos = element;
+    if (!pos) return null;
 
-    x = pos.column * cellSize;
-    y = pos.row * cellSize;
-
-    return `translate(${x + offset}px, ${y + offset}px)`;
+    return `translate(${pos.x}px, ${pos.y}px)`;
   }
 
   findMapPosition(rowIndex: number, columnIndex: number, element: any) {

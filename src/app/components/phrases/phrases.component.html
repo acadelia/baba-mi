@@ -1,0 +1,7 @@
+@for (phrase of phrases; track phrase.position) {
+  <div [style.transform]="getStyle(phrase.position)">
+    @for (word of phrase.words; track $index) {
+      <div>{{ word }}</div>
+    }
+  </div>
+}

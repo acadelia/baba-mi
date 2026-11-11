@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid" #gridRef>
   <div class="row" *ngFor="let row of grid(); let rowIndex = index">
     <div
       class="cell"
@@ -7,6 +7,8 @@
       [class.bottom]="!hasBottom(rowIndex, colIndex)"
       [class.left]="!hasLeft(rowIndex, colIndex)"
       [class.right]="!hasRight(rowIndex, colIndex)"
+      [attr.data-row]="rowIndex"
+      [attr.data-col]="colIndex"
     >
       <img
         src="assets/flag.jpg"
